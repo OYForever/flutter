@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      initialRoute: "/",
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -21,7 +22,21 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        "/": (context) => MyHomePage(title: "Flutter Demo Home Page"),
+        "new_page": (context) => EchoRoute(),
+        "tip2": (context) =>
+            TipRoute(text: ModalRoute.of(context).settings.arguments),
+      },
+      // home: MyHomePage(title: 'Flutter Demo Home Page'),
+      onGenerateRoute: (RouteSettings setting) {
+        return MaterialPageRoute(builder: (context) {
+          String routeName = setting.name;
+          // 如果访问的路由页需要登录，但当前未登录，则直接返回登录页路由，
+          // 引导用户登录；其它情况则正常打开路由。
+          return null;
+        });
+      },
     );
   }
 }
@@ -102,10 +117,15 @@ class _MyHomePageState extends State<MyHomePage> {
             FlatButton(
               child: Text("open new route"),
               textColor: Colors.blue,
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return NewRoute();
-                }));
+              onPressed: () async {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return NewRoute();
+                // }));
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => NewRoute()));
+                // Navigator.pushNamed(context, "new_page", arguments: "hi");
+                var result = await Navigator.of(context)
+                    .pushNamed("tip2", arguments: "hi");
+                print("$result");
               },
             ),
           ],
@@ -135,7 +155,7 @@ class NewRoute extends StatelessWidget {
 }
 
 class TipRoute extends StatelessWidget {
-  TipRoute ({
+  TipRoute({
     Key key,
     @required this.text, // 接收一个text参数
   }) : super(key: key);
@@ -174,19 +194,25 @@ class RouterTestRoute extends StatelessWidget {
           // 打开`TipRoute`，并等待返回结果
           var result = await Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) {
-                return TipRoute(
-                  //路由参数
-                  text: "我是提示xxxxx",
-                );
-              }
-            ),
+            MaterialPageRoute(builder: (context) {
+              return TipRoute(
+                //路由参数
+                text: "我是提示xxxxx",
+              );
+            }),
           );
           print("路由返回值：$result");
         },
         child: Text("打开提示页"),
       ),
     );
+  }
+}
+
+class EchoRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var agrs = ModalRoute.of(context).settings.arguments;
+    return null;
   }
 }
