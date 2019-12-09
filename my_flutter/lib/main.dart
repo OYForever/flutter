@@ -1,4 +1,3 @@
-//2布局类组件-3流式布局
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

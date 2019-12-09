@@ -98,6 +98,7 @@ class CenterColumnRoute extends StatelessWidget {
         children: <Widget>[
           Text("hi"),
           Text("world"),
+          abcRoute(),
         ],
       ),
     );
