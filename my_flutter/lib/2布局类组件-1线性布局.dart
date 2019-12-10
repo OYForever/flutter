@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
           RaisedButton(
             child: Text("线性布局"),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => abcRoute()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AbcRoute()));
             },
           )
         ],
@@ -98,14 +98,13 @@ class CenterColumnRoute extends StatelessWidget {
         children: <Widget>[
           Text("hi"),
           Text("world"),
-          abcRoute(),
         ],
       ),
     );
   }
 }
 
-class abcRoute extends StatelessWidget {
+class AbcRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
