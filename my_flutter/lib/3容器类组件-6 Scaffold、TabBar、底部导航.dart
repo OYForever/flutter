@@ -1,4 +1,4 @@
-//3容器类组件-6 Scaffold、TabBar、底部导航
+//3容器类组件-6 Scaffold、TabBar、底部导航。
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
