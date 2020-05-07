@@ -1,42 +1,80 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(TabBarSample());
 
-class MyApp extends StatelessWidget {
+class TabBarSample extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      // 添加DefaultTabController关联TabBar及TabBarView
+      home: DefaultTabController(
+        length: items.length,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('TabBar选项卡示例'),
+            bottom: TabBar(
+              isScrollable: true, // 设置为可以滚动
+              tabs: items.map((ItemView item) {
+                return Tab(
+                  text: item.title,
+                  icon: Icon(item.icon),
+                );
+              }).toList(),
+            ),
+          ),
+          body: TabBarView(
+            children: items.map((ItemView item) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SelectedView(item: item),
+              );
+            }).toList(),
+          ),
+        ),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+/// 视图项数据
+class ItemView {
+  const ItemView({this.title, this.icon});
   final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+  final IconData icon;
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+/// 选项卡类目
+const List<ItemView> items = const <ItemView>[
+  const ItemView(title: '自驾', icon: Icons.directions_car),
+  const ItemView(title: '自行车', icon: Icons.directions_bike),
+  const ItemView(title: '轮船', icon: Icons.directions_boat),
+  const ItemView(title: '公交车', icon: Icons.directions_bus),
+  const ItemView(title: '火车', icon: Icons.directions_railway),
+  const ItemView(title: '步行', icon: Icons.directions_walk),
+];
+
+/// 被选中的视图
+class SelectedView extends StatelessWidget {
+  const SelectedView({Key key, this.item}) : super(key: key);
+
+  // 视图数据
+  final ItemView item;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          //在此处添加子控件
-          
-        ],
+    final TextStyle textStyle = Theme.of(context).textTheme.headline4;
+    return Card(
+      color: Colors.white,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // 垂直方向最小化处理
+          crossAxisAlignment: CrossAxisAlignment.center, // 水平方向居中对齐
+          children: <Widget>[
+            Icon(item.icon, size: 128.0, color: textStyle.color),
+            Text(item.title, style: textStyle),
+          ],
+        ),
       ),
     );
   }
